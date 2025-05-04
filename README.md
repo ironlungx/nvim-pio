@@ -1,4 +1,5 @@
 # Neovim with PlatformIO
+![hmm](https://github.com/ironlungx/icons/blob/main/screenshot.png?raw=true)
 ## Quick start
 1. Install `clangd`
 2. Setup LSP server for neovim `require('lspconfig').clangd.setup({})`

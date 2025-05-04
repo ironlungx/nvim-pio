@@ -1,0 +1,2 @@
+Checks: '-*, -misc-definitions-in-headers' # Fixes some issue with header reinclusion	        
+IndentWidth: 2 # Only if you like 2, replace with 3/4/.. if you'd like        

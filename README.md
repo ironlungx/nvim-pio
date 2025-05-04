@@ -22,10 +22,10 @@ I use `lazy.nvim` so, just add the following to your plugins table, or create a 
 
 ```lua
 return {
-  {
+	{
 		"williamboman/mason.nvim",
-    config = function()
-		  require("mason").setup({})
+		config = function()
+			require("mason").setup({})
 		end,
 	},
 	{
@@ -41,16 +41,17 @@ return {
 		config = function()
 			local lspconfig = require("lspconfig")
 			lspconfig.lua_ls.setup({})
-      lspconfig.clangd.setup({
-        cmd = {
-          "clangd",
-          "--background-index",
-          "-j=12", -- Replace with the number of cores you have...
-        },
-      })
-    end,
-  },
+			lspconfig.clangd.setup({
+				cmd = {
+					"clangd",
+					"--background-index",
+					"-j=12", -- Replace with the number of cores you have...
+				},
+			})
+		end,
+	},
 }
+
 ```
 
 
@@ -65,6 +66,6 @@ return {
    $ cd PROJECT_NAME
    ```
 
-2. Edit `platformio.ini` to set `board` and `platform`
+2. Change options in `platformio.ini` (stuff like `board` and `platform`)
 3. `pio run -t clean && pio run -t compiledb`
 4. Voila! It should work. If not, open a new issue and I’ll do my best to help.

@@ -1,3 +1,4 @@
 .pio
 .cache/
 compile_commands.json
+.framework

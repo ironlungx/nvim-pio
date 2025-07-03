@@ -1,11 +1,18 @@
 import os
 
 
-# Get the ~/.platformio directory (or equivalent)
 def get_platformio_packages_dir():
     return os.environ.get(
         "PLATFORMIO_PACKAGES_DIR", os.path.expanduser("~/.platformio/packages/")
     )
+
+
+def get_framework():
+    try:
+        with open(".framework", "r") as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        return ""  # default fallback
 
 
 def gen_recursive_include_path(base_dir):
@@ -17,9 +24,8 @@ def gen_recursive_include_path(base_dir):
     return include_paths
 
 
-lib_dir = os.path.join(
-    get_platformio_packages_dir(), "framework-arduinoespressif32", "libraries"
-)
+lib_dir = os.path.join(get_platformio_packages_dir(), get_framework(), "libraries")
+
 
 flags = " ".join(gen_recursive_include_path(lib_dir))
 print(flags)

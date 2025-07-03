@@ -68,9 +68,8 @@ return {
    ```
 
 2. Change options in `platformio.ini` (stuff like `board` and `platform`)
-3. This step is optional, but if you encounter "header not found" errors for 
-     framework-specific libraries (like `WiFi.h`, `Wire.h`, etc.), run `python3 setup.py` 
-     and choose your framework
-     (`python3 setup.py` (or `python setup.py` on some systems))
+> This step is optional, but if you encounter "header not found" errors for framework-specific libraries (like `WiFi.h`, `Wire.h`, etc.), run `python3 setup.py` and choose your framework
+3. `python3 setup.py` (or `python setup.py` on some systems)
+   
 4. `pio run -t clean && pio run -t compiledb`
 5. Voila! It should work. If not, open a new issue and I’ll do my best to help.

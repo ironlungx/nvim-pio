@@ -71,6 +71,6 @@ return {
 2.5. This step is optional, but if you encounter "header not found" errors for 
      framework-specific libraries (like `WiFi.h`, `Wire.h`, etc.), run `python3 setup.py` 
      and choose your framework
-     `python3 setup.py` (or `python setup.py` on some systems)
+     (`python3 setup.py` (or `python setup.py` on some systems))
 3. `pio run -t clean && pio run -t compiledb`
 4. Voila! It should work. If not, open a new issue and I’ll do my best to help.

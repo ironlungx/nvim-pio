@@ -19,4 +19,6 @@ CompileFlags:
     -mcpu=*
   ]
 Diagnostics:
-  Suppress: "pp_including_mainfile_in_preamble"
+  Suppress:
+    - pp_including_mainfile_in_preamble
+    - pp_expr_bad_token_start_expr

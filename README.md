@@ -52,9 +52,7 @@ return {
     end,
   },
 }
-
 ```
-
 
 ## Project configuration
 

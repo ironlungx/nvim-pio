@@ -67,3 +67,7 @@ return {
 5. LSP should now work! If it doesn't open an issue and I will try my best to help you
 
 > If you find a better way to get LSP working, please open a PR
+
+
+## Related Project(s)
+- [nvim-platformio.lua](https://github.com/anurag3301/nvim-platformio.lua)

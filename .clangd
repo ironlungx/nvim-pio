@@ -22,3 +22,5 @@ Diagnostics:
   Suppress:
     - pp_including_mainfile_in_preamble
     - pp_expr_bad_token_start_expr
+    - redefinition_different_typedef
+    - main_returns_nonint

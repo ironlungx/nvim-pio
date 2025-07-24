@@ -1,13 +1,13 @@
-# Neovim with PlatformIO
+ Neovim with PlatformIO
 ![hmm](https://github.com/ironlungx/icons/blob/main/screenshot.png?raw=true)
 
 ## Quick start
 1. Install `clangd`
 2. Setup LSP server for neovim `require('lspconfig').clangd.setup({})`
 3. Clone this repository `$ git clone https://github.com/ironlungx/nvim-pio`
-4. Edit `platformio.ini` to set `board` and `platform`
-5. (Optional) `python3 setup.py` and choose your framework
-6. `$ pio run -t clean && pio run -t compiledb`
+4. Set `board` and `platform`
+5. `pio init --ide vim`
+6. `python3 conv.py`
 7. Open Neovim. LSP should now work! If not, open an issue.
 
 ## Neovim configuration
@@ -43,11 +43,7 @@ return {
       local lspconfig = require("lspconfig")
       lspconfig.lua_ls.setup({})
       lspconfig.clangd.setup({
-        cmd = {
-          "clangd",
-          "--background-index",
-          "-j=12", -- Replace with the number of cores you have...
-        },
+        cmd = { "clangd", "--background-index", },
       })
     end,
   },
@@ -66,7 +62,12 @@ return {
    ```
 
 2. Change options in `platformio.ini` (stuff like `board` and `platform`)
-> This step is optional, but if you encounter "header not found" errors for framework-specific libraries (like `WiFi.h`, `Wire.h`, etc.), run `python3 setup.py` and choose your framework
-   
-3. `pio run -t clean && pio run -t compiledb`
-4. Voila! It should work. If not, open a new issue and I’ll do my best to help.
+3. `pio init --ide vim` This creates `.ccls` which `conv.py` uses to generate `compile_commands.json`
+4. `rm compile_commands* && python3 conv.py` (you can also delete `compile_commands.json.bak` after this)
+5. LSP should now work! If it doesn't open an issue and I will try my best to help you
+
+> If you find a better way to get LSP working, please open a PR
+
+
+## Related Project(s)
+- [nvim-platformio.lua](https://github.com/anurag3301/nvim-platformio.lua)

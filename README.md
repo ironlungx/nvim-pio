@@ -68,6 +68,40 @@ return {
 
 > If you find a better way to get LSP working, please open a PR
 
+## For ccls users
+
+> [!NOTE]
+> You don't need to clone this repo when using this method.
+
+Make sure you installed `ccls`. If not, check [this](https://github.com/MaskRay/ccls/wiki/Build). Then configure `ccls` in your Neovim config:
+
+```lua
+-- Optional
+vim.lsp.config("ccls", {
+  init_options = {
+    diagnostics = {
+      onChange = 100,
+    },
+  },
+})
+
+vim.lsp.enable("ccls")
+
+-- If you want to keep clangd
+if vim.fn.filereadable(vim.uv.cwd() .. "/.ccls") == 0 then
+  vim.lsp.enable("clangd")
+else
+  vim.lsp.enable("ccls")
+end
+```
+
+1. Create a new project (run `pio home` and then create a project using the web UI for simplicity).
+2. Run `pio init --ide vim` (`.ccls` file will be generated in the root project).
+3. Run `pio run -t compiledb`
+4. Done
+
+> [!NOTE]
+> Everytime you install new library, run this command again `pio init --ide vim && pio run -t compiledb`
 
 ## Related Project(s)
 - [nvim-platformio.lua](https://github.com/anurag3301/nvim-platformio.lua)

@@ -1,41 +1,68 @@
- Neovim with PlatformIO
-![hmm](https://github.com/ironlungx/icons/blob/main/screenshot.png?raw=true)
+# Neovim with PlatformIO
 
-## Quick start
-1. Install `clangd`
-2. Setup LSP server for neovim `require('lspconfig').clangd.setup({})`
-3. Clone this repository `$ git clone https://github.com/ironlungx/nvim-pio`
-4. Set `board` and `platform`
-5. `pio init --ide vim`
-6. `python3 conv.py`
-7. Open Neovim. LSP should now work! If not, open an issue.
+![screenshot](https://github.com/ironlungx/icons/blob/main/screenshot.png?raw=true)
 
-## Neovim configuration
+## Overview
 
-Install the following plugins in your neovim config:
-* [mason](https://github.com/williamboman/mason.nvim)
-* [mason-lspconfig](https://github.com/williamboman/mason-lspconfig.nvim)
-* [lspconfig](https://github.com/neovim/nvim-lspconfig)
+Since getting LSP to work is **very** finicky this guide provides **two methods** to get LSP working. Try both of them and use the one with the least errors
 
-> [!NOTE]
-> Mason is optional — you can install `clangd` and `lua-language-server` via your system package manager.
+* **Method 1**: Using `clangd`
+* **Method 2**: Using `ccls` 
 
+> ⭐ If you find this project useful, consider starring the repo to help it gain visibility!
 
-I use `lazy.nvim` so, just add the following to your plugins table, or create a new file in `lua/plugins/lsp.lua`
+---
+
+## Common Prerequisites
+
+1. Clone the repo (if using Method 1):
+
+```sh
+git clone https://github.com/ironlungx/nvim-pio PROJECT_NAME
+cd PROJECT_NAME
+```
+
+2. Set up your PlatformIO project:
+
+* Edit `platformio.ini` to set your `board` and `platform`
+* Run:
+
+```sh
+pio init --ide vim
+```
+
+---
+
+## Method 1: Using `clangd`
+
+### 1. Install `clangd`
+
+Use your system package manager or install via [Mason](https://github.com/williamboman/mason.nvim)
+
+### 2. Generate `compile_commands.json`
+```sh
+python3 conv.py
+```
+
+### 3. Configure Neovim LSP
+
+Install the following Neovim plugins (using `lazy.nvim` or your preferred manager):
 
 ```lua
 return {
   {
     "williamboman/mason.nvim",
-      config = function()
+    config = function()
       require("mason").setup({})
     end,
   },
   {
     "williamboman/mason-lspconfig.nvim",
     config = function()
-      require("mason-lspconfig").setup({ ensure_installed = { "lua_ls", "clangd" }, })
-    end
+      require("mason-lspconfig").setup({
+        ensure_installed = { "clangd", "lua_ls" },
+      })
+    end,
   },
   {
     "neovim/nvim-lspconfig",
@@ -43,40 +70,40 @@ return {
       local lspconfig = require("lspconfig")
       lspconfig.lua_ls.setup({})
       lspconfig.clangd.setup({
-        cmd = { "clangd", "--background-index", },
+        cmd = { "clangd", "--background-index" },
       })
     end,
   },
 }
 ```
 
-## Project configuration
+### 4. Run and Verify
 
-> [!TIP]
-> You can also use this repository as a template if you are planning to use version control anyways
+* Open Neovim inside your project folder.
+* LSP should now work. If not, feel free to open an issue.
 
-1. Clone this repository locally with
-   ```
-   $ git clone https://github.com/ironlungx/nvim-pio PROJECT_NAME/
-   $ cd PROJECT_NAME
-   ```
+---
 
-2. Change options in `platformio.ini` (stuff like `board` and `platform`)
-3. `pio init --ide vim` This creates `.ccls` which `conv.py` uses to generate `compile_commands.json`
-4. `rm compile_commands* && python3 conv.py` (you can also delete `compile_commands.json.bak` after this)
-5. LSP should now work! If it doesn't open an issue and I will try my best to help you
+## Method 2: Using `ccls` (Alternative)
 
-> If you find a better way to get LSP working, please open a PR
+### 1. Install `ccls`
 
-## For ccls users
+Follow the install guide on [ccls GitHub](https://github.com/MaskRay/ccls/wiki/Build)
 
-> [!NOTE]
-> You don't need to clone this repo when using this method.
+### 2. Initialize Your Project
 
-Make sure you installed `ccls`. If not, check [this](https://github.com/MaskRay/ccls/wiki/Build). Then configure `ccls` in your Neovim config:
+Run:
+
+```sh
+pio init --ide vim
+pio run -t compiledb
+```
+
+### 3. Configure Neovim to Use `ccls`
+
+In your Neovim config:
 
 ```lua
--- Optional
 vim.lsp.config("ccls", {
   init_options = {
     diagnostics = {
@@ -87,21 +114,31 @@ vim.lsp.config("ccls", {
 
 vim.lsp.enable("ccls")
 
--- If you want to keep clangd
+-- Optional: Fallback to clangd if .ccls doesn't exist
 if vim.fn.filereadable(vim.uv.cwd() .. "/.ccls") == 0 then
   vim.lsp.enable("clangd")
-else
-  vim.lsp.enable("ccls")
 end
 ```
 
-1. Create a new project (run `pio home` and then create a project using the web UI for simplicity).
-2. Run `pio init --ide vim` (`.ccls` file will be generated in the root project).
-3. Run `pio run -t compiledb`
-4. Done
+### 4. Keep It Up to Date
 
-> [!NOTE]
-> Everytime you install new library, run this command again `pio init --ide vim && pio run -t compiledb`
+Every time you modify project libraries or config:
 
-## Related Project(s)
-- [nvim-platformio.lua](https://github.com/anurag3301/nvim-platformio.lua)
+```sh
+pio init --ide vim && pio run -t compiledb
+```
+
+---
+
+## Switching Between `clangd` and `ccls`
+
+* Use **clangd** if you're looking for easier setup and performance.
+* Use **ccls** if you prefer `.ccls`-based workflows or have specific compatibility needs.
+
+---
+
+## Related Projects
+
+* [nvim-platformio.lua](https://github.com/anurag3301/nvim-platformio.lua)
+
+> Found a better way or improvement? Open a PR or issue!
